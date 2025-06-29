@@ -71,6 +71,17 @@ docker run --name logstash-geo-export \
 
 Note: Make sure your environment variables are properly set or replace them with actual values in the command above.
 
+### Worth Noting...
+
+If your dataset does not contain a `@timestamp` field, Logstash will likely add one with the time of extraction.
+
+If you want to remove the field, try using `jq`:
+
+```shell
+cp you-file.ndjson you-file.ndjson.bak;
+cat you-file.ndjson | jq -c 'del(.["@timestamp"])' > you-file.ndjson.tmp && mv you-file.ndjson.tmp you-file.ndjson
+```
+
 ## License
 
 This project is licensed under GNU AGPL v3, as specified in the LICENSE file.

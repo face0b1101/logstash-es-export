@@ -1,0 +1,3 @@
+- pipeline.id: geo-export
+  path.config: "/usr/share/logstash/pipeline/geo-export.conf"
+  pipeline.workers: 1

@@ -1,0 +1,27 @@
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    container_name: logstash-geo-export
+    environment:
+      LS_JAVA_OPTS: "-Xmx1g -Xms1g"
+      PIPELINE_WORKERS: "2"
+      ELASTIC_CLOUD_ID: ${ELASTIC_CLOUD_ID} 
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST} 
+      ELASTICSEARCH_API_KEY: ${ELASTICSEARCH_API_KEY} 
+      ELASTICSEARCH_INDEX: ${ELASTICSEARCH_INDEX} 
+    env_file:
+      - .env
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/config:/usr/share/logstash/config
+      - ./export:/usr/share/logstash/export
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    networks:
+      - logstash-es-export
+    restart: no
+
+networks:
+  logstash-es-export:
+    driver: bridge
